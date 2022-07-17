@@ -38,3 +38,10 @@ INFO : 2022-07-17 14:08:20,445 : Started server process [248]
 INFO : 2022-07-17 14:08:20,445 : Waiting for application startup.
 INFO : 2022-07-17 14:08:20,445 : Application startup complete.
 INFO : 2022-07-17 14:08:33,766 : Shutting down
+INFO : 2022-07-17 14:51:32,766 : Started server process [5372]
+INFO : 2022-07-17 14:51:32,766 : Waiting for application startup.
+INFO : 2022-07-17 14:51:32,766 : Application startup complete.
+INFO : 2022-07-17 14:51:45,999 : Shutting down
+INFO : 2022-07-17 14:51:46,109 : Waiting for application shutdown.
+INFO : 2022-07-17 14:51:46,110 : Application shutdown complete.
+INFO : 2022-07-17 14:51:46,111 : Finished server process [5372]
