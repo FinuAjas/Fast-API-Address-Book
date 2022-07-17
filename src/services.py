@@ -8,7 +8,7 @@ from geopy import distance
 import logging
 
 
-logging.basicConfig(filename='logs.log', level=logging.INFO,
+logging.basicConfig(level=logging.INFO,
                     format='%(levelname)s : %(asctime)s : %(message)s')
 
 
@@ -57,8 +57,7 @@ def get_user(db: Session, user_id: int):
 
 
 def create_address(db: Session, address: schemas.AddressCreate, user_id: int):
-    """Function to create new address. Accepts city name from user and using 'find_cordinates' 
-    function gets the geocornitaes and saves latitude and longitude automaticaly"""
+    """Function to create new address. Accepts city name and saves latitude and longitude automaticaly"""
     address = models.Addresses(**address.dict(), owner_id=user_id)
     coordinates = find_coordinates(address.city)
     address.name = address.name
@@ -125,6 +124,7 @@ def find_coordinates(city):
 
 
 def find_near_by_address(address, km, db, skip, limit):
+    """Accetps a location and returns all addresses in a given distance"""
     coordinates = find_coordinates(address)
     coord_long_lat = ((coordinates.longitude, coordinates.latitude))
     logging.info(f'{coord_long_lat} geolocation')
@@ -136,6 +136,24 @@ def find_near_by_address(address, km, db, skip, limit):
         city_long_lat = ((city.longitude, city.latitude))
         logging.info(f'{city_long_lat} geolocation')
         difference_in_km = distance.distance(coord_long_lat, city_long_lat).km
+        logging.info(difference_in_km)
+        if difference_in_km < km:
+            address_in_given_km.append(address)
+    return address_in_given_km
+
+
+def find_near_by_address_by_cordinates(latitude, longitude, km, skip, limit, db):
+    """Accetps Coordinates and returns all addresses in a given distance"""
+    coordinates = ((longitude, latitude))
+    logging.info(f'{coordinates} geolocation')
+    addresses = get_addresses(db=db, skip=skip, limit=limit)
+    km = km
+    address_in_given_km = []
+    for address in addresses:
+        city = find_coordinates(address.city)
+        city_long_lat = ((city.longitude, city.latitude))
+        logging.info(f'{city_long_lat} geolocation')
+        difference_in_km = distance.distance(coordinates, city_long_lat).km
         logging.info(difference_in_km)
         if difference_in_km < km:
             address_in_given_km.append(address)

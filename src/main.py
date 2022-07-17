@@ -99,8 +99,18 @@ def update_address(address_id: int, address: schemas.AddressCreate, db: Session 
 
 
 @app.get("/find_near_by_address")
-def find_near_by_address(address: str, distance: int, skip: int = 0, limit: int = 10, db: Session = Depends(services.get_db)):
+def find_near_by_address(address: str, distance: int, skip: int = 0, limit: int = 10,
+                         db: Session = Depends(services.get_db)):
     """Returns all address in the database base on given city name"""
     near_by_address = services.find_near_by_address(
         address=address, km=distance, db=db, skip=skip, limit=limit)
+    return near_by_address
+
+
+@app.get("/find_near_by_address_by_cordinates")
+def find_near_by_address_by_cordinates(latitude: float, longitude: float, distance: int, skip: int = 0,
+                                       limit: int = 10, db: Session = Depends(services.get_db)):
+    """Returns all address in the database base on given logitude and latitude"""
+    near_by_address = services.find_near_by_address_by_cordinates(
+        latitude=latitude, longitude=longitude, km=distance, skip=skip, limit=limit, db=db)
     return near_by_address
